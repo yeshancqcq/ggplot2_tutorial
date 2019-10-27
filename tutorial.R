@@ -179,8 +179,8 @@ for(col in 2:4){
 
 # import big ten data
 bigten <- read_csv("data/bigten.csv")
-
-# add a base map layer (this is provided by the "maps" package):
+# add a base map layer 
+##(this is provided by the "maps" package; commonly used base maps are "usa", "state" and "world")
 base <- map_data("state")
 
 # plot the map:
@@ -189,8 +189,8 @@ map <- ggplot() +
   geom_polygon(data = base, aes(x=long, y = lat, group = group), 
                fill = "white", color = "black", size = 0.05) +
   coord_fixed(xlim = c(-96, -73),  ylim = c(38, 46), ratio = 1.4)+
-  geom_point(data = bigten, aes(x = lon, y = lat, colour=Division), size = 2.2) +
-  scale_colour_manual(values = c('W' = 'red', 'E' = 'blue'))+
+  geom_point(data = bigten, aes(x = lon, y = lat, colour=National_Championship), size = 2.2) +
+  scale_colour_gradient2(low=NA, mid="#edcac7",high="dark red",limits=c(0,11), na.value = NA)+
   geom_text(data = bigten, aes(x = lon, y = lat, label = paste("  ", as.character(University), sep="")), fontface = "bold",angle = 0, hjust = 0, color = "black", size = 3.5)+
   theme(
     axis.line = element_blank(),
@@ -204,16 +204,47 @@ map <- ggplot() +
     legend.background = element_rect(colour = NA), 
     legend.key = element_rect(colour = NA, fill = NA)
   )+
-  labs(colour = "Division")+
+  labs(colour = "National Championships")+
   ggtitle("Big Ten Conference") +
   annotate("text", x = -87, y = 41, label = "United States", size = 6, colour = "black", alpha = 0.3) 
 
 map
 
+# frequency plot
+# In which years that Wisconsin made it to a bowl game?
+## Intitiating an empty vector that will contain every year that Wisconsin was at a bowl game
+bowl <- vector()
 
+# Loop through the Bowl column of wisconsin data frame
+for(row in 1:nrow(wisconsin)){
+  #check if there is a bowl game in this row
+  if(!is.na(wisconsin$Bowl[row])){
+    #record the value in the Year columne
+    bowl_year <- wisconsin$Year[row]
+    #add it to the bowl vector
+    bowl <- c(bowl, bowl_year)
+  }
+}
 
+# make bowl into a data frame
+bowl_df <- data.frame(Appearance = bowl)
 
+# bowl appearance frequency
 
+plot7 <- ggplot()+
+  geom_freqpoly(data=bowl_df, aes(x=Appearance), bins=20, colour="purple", size = 1.5)+
+  geom_histogram(data=bowl_df, aes(x=Appearance), binwidth = 5, 
+                 fill="orange", alpha=0.5, colour="black")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA), 
+        axis.line.x = element_line(colour = "black"), axis.title.x=element_text(size=10), 
+        axis.line.y= element_line(colour = "black"), axis.title.y=element_text(size=10)
+  ) +
+  ggtitle("Wisconsin Bowl Appearances Every 5 Years")+
+  scale_x_continuous(name = expression("Football Seasons"), limits = c(1920, 2015)) +
+  scale_y_continuous(name = expression("Bowl Appearances"), limits = c(0, 5))
+
+plot7
 
 
 
