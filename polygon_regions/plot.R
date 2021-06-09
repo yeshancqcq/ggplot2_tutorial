@@ -1,0 +1,118 @@
+setwd("C:/Users/yeshan/Downloads/test_regions")
+
+library(readr)
+library(tidyverse)
+#install.packages('devtools')
+library(devtools)
+#remove.packages("rlang")
+#install.packages("rlang")
+
+#devtools::install_github("UrbanInstitute/urbnmapr")
+library(urbnmapr)
+library(ggplot2)
+
+data <- read_csv("data.csv")
+regions <- read_csv("regions.csv")
+all <- merge(data, regions, by = "region")
+df <- left_join(all,states, by = "state_name") 
+
+
+df %>%
+  ggplot(aes(long, lat, group = group,fill = data)) +
+  geom_polygon(color = NA) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour="black", fill = NA), 
+        axis.line = element_line(color = "black"),
+        legend.justification = c(0, 0),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "right",
+        legend.background = element_rect(colour=NA, fill = NA),
+        legend.key = element_rect(colour = "white", fill = NA)
+  )+
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  labs(fill = "Data")
+
+df %>%
+  ggplot(aes(long, lat, group = group,fill = region)) +
+  geom_polygon(color = NA) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour="black", fill = NA), 
+        axis.line = element_line(color = "black"),
+        legend.justification = c(0, 0),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "right",
+        legend.background = element_rect(colour=NA, fill = NA),
+        legend.key = element_rect(colour = "white", fill = NA)
+  )+
+  scale_fill_manual(values = c(
+    "Far West" = "red",
+    "Great Lakes" = "light blue",
+    "Plains" = "gray30",
+    "New England" = "green2",
+    "Rocky Mtns" = "tan",
+    "Southeast" = "purple",
+    "Southwest" = "pink",
+    "Mid Atlantic" = "brown"
+  ))+
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  labs(fill = "Data")
+
+df %>%
+  ggplot(aes(long, lat, group = group,fill = data)) +
+  geom_polygon(color = NA) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour=NA, fill = "gray70"), 
+        axis.line = element_line(color = "black"),
+        legend.justification = c(0, 0),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        legend.position ="none",
+        legend.background = element_rect(colour=NA, fill = NA),
+        legend.key = element_rect(colour = "white", fill = NA)
+  )+
+  annotate("text",
+           x=c(-119, -110, -98, -86, -75, -70, -83, -103),
+           y=c(40, 43.5, 43, 43, 41.2, 45, 35, 34),
+           label=c("Far West","Rocky Mtns", "Plains", "Great Lakes", "Mid Atlantic", "New England", "Southeast", "Southeast"),
+           colour = "white",
+           size=4)+
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  labs(fill = "Data")
+
+df %>%
+  ggplot(aes(long, lat, group = group,fill = region)) +
+  geom_polygon(color = NA) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour="black", fill = NA), 
+        axis.line = element_line(color = "black"),
+        legend.justification = c(0, 0),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "none",
+        legend.background = element_rect(colour=NA, fill = NA),
+        legend.key = element_rect(colour = "white", fill = NA)
+  )+
+  annotate("text",
+           x=c(-119, -110, -98, -86, -75, -70, -83, -103),
+           y=c(40, 43.5, 43, 43, 41.2, 45, 35, 34),
+           label=c("Far West","Rocky Mtns", "Plains", "Great Lakes", "Mid Atlantic", "New England", "Southeast", "Southeast"),
+           colour = c("black", "black", "white", "black", "black", "black", "white", "black"),
+           size=4)+
+  scale_fill_manual(values = c(
+    "Far West" = "red",
+    "Great Lakes" = "light blue",
+    "Plains" = "gray30",
+    "New England" = "green2",
+    "Rocky Mtns" = "tan",
+    "Southeast" = "purple",
+    "Southwest" = "pink",
+    "Mid Atlantic" = "orange"
+  ))+
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  labs(fill = "Data")
