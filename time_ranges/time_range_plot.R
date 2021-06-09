@@ -43,7 +43,7 @@ p <- p +
     "Type3" = "green"
   ))+
   #---------------------------
-  #if you want to have a shaded verticle bar, use this section; otherwise, delete this section
+  #if you want to have a shaded vertical bar, use this section; otherwise, delete this section
 
   annotate("rect", fill = "tan", xmin = 11700, xmax = 12900, ymin = -Inf, ymax = Inf,
          alpha = .3)+
