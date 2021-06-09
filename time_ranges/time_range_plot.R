@@ -36,7 +36,7 @@ p <- p +
         legend.background = element_rect(colour=NA, fill = NA),
         legend.key = element_rect(colour = "white", fill = NA)
   )+
-  #custome your colors here, change the Type1, Type2, Type3 into Best, Shorter, Problem, etc.
+  #customize your colors here, change the Type1, Type2, Type3 into Best, Shorter, Problem, etc.
   scale_color_manual( values = c(
     "Type1" = "red",
     "Type2" = "blue",
