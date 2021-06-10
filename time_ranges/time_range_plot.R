@@ -1,10 +1,11 @@
 # change this to your own directory
 setwd("C:/Users/user1/Documents/GitHub/ggplot2_tutorial/time_ranges")
 
+
 library(readr)
 library(ggplot2)
 
-data <- read_csv("data/data.csv")
+data <- read_csv("data/age_data.csv")
 
 p <- ggplot()
 
@@ -38,10 +39,11 @@ p <- p +
   )+
   #customize your colors here, change the Type1, Type2, Type3 into Best, Shorter, Problem, etc.
   scale_color_manual( values = c(
-    "Type1" = "red",
-    "Type2" = "blue",
-    "Type3" = "green"
-  ))+
+    "type1" = "red",
+    "type2" = "blue",
+    "type3" = "green"
+  ),
+  labels = c("A","B","C"))+
   #---------------------------
   #if you want to have a shaded vertical bar, use this section; otherwise, delete this section
 
